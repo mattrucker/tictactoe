@@ -1,60 +1,61 @@
-import curses
-
 def main():
     board = init_board()
-    #display_board()
-    game()
+    display_board(board)
+    game(board)
 
 def init_board():
-    board = [position for position in range(9)]
+    board = []
+    for position in range(9):
+        board.append(position + 1)
+    return board
 
-def display_board():
-    s = curses.initscr()
-    w = curses.newwin(7, 7, 0, 0)
-    w.box()
-    w.vline(1, 2, "|", 5)
-    w.vline(1, 4, "|", 5)
-    w.hline(2, 1, "_", 5)
-    w.hline(4, 1, "_", 5)
-    #w.addstr(1, 1, "0")
-    #w.addstr(1, 3, "1")
-    #w.addstr(1, 5, "2")
-    #w.addstr(3, 1, "3")
-    #w.addstr(3, 3, "4")
-    #w.addstr(3, 5, "5")
-    #w.addstr(5, 1, "6")
-    #w.addstr(5, 3, "7")
-    #w.addstr(5, 5, "8")
-    w.refresh()
-    c = w.getch()
-    if c == "q":
-        curses.endwin()
-
-def checkWinCondition():
-    if board[0] == board[1] == board[2] or
-    board[3]  ==  board[4] == board[5] or
-    board[6] == board[7] == board[8] or
-    board[0] == board[4] == board[8] or
-    board[2] == board[4] == board[6] or
-    board[0] == board[3] == board[6] or
-    board[1] == board[4] == board[7] or
-    board[2] == board[5] == board[8]
+def display_board(board):
+    #yay for fstrings
+    print()
+    print(f"{board[0]}|{board[1]}|{board[2]}")
+    print ("-+-+-")
+    print(f"{board[3]}|{board[4]}|{board[5]}")
+    print ("-+-+-")
+    print(f"{board[6]}|{board[7]}|{board[8]}")
+    print()
+    
+def checkWinCondition(board):
+    if board[0] == board[1] == board[2] or board[3]  ==  board[4] == board[5] or board[6] == board[7] == board[8] or board[0] == board[4] == board[8] or board[2] == board[4] == board[6] or board[0] == board[3] == board[6] or board[1] == board[4] == board[7] or board[2] == board[5] == board[8]:
         return True
-    elif
+    else:
         return False
 
-def game():
+def game(board):
     winCondition = 0
     while winCondition == 0:
-        x = input("Player X, select your next position:")
-        if checkWinCondition()
-            print("Congratulations player X on the W!")
+        x(board)
+        display_board(board)
+        if checkWinCondition(board):
+            print("Good game. Thanks for playing! X wins!")
         else:
-        o = input("Player O, select your next position:")
-        checkWinCondition()
+            o(board)
+            display_board(board)
+            if checkWinCondition(board):
+                print("Good game. Thanks for playing! O wins!")
+            else:
+                continue
+        for position in board:
+            if board[position] != "x" and board[position] != "o" and checkWinCondition(board) == False:
+                print("Tie!")
+            
 
+def x(board):
+    x = input("x's turn to choose a square (1-9):")
+    x = int(x)
+    board.pop(x - 1)
+    board.insert(x - 1, "x")
+    return board
 
-
-
+def o(board):
+    o = input("o's turn to choose a square (1-9):")
+    o = int(o)
+    board.pop(o - 1)
+    board.insert(o - 1, "o")
+    return board
 
 main()
