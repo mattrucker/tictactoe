@@ -1,3 +1,5 @@
+#CSE210 - W02 Prove: Developer - Solo Code Submission
+#Matt Rucker
 def main():
     board = init_board()
     display_board(board)
@@ -30,19 +32,29 @@ def game(board):
     while winCondition == 0:
         x(board)
         display_board(board)
+        if tieCheck(board):
+            print("Tie! Try again.")
+            break
         if checkWinCondition(board):
             print("Good game. Thanks for playing! X wins!")
+            break
         else:
             o(board)
             display_board(board)
+            if tieCheck(board):
+                print("Tie! Try again.")
+                break
             if checkWinCondition(board):
                 print("Good game. Thanks for playing! O wins!")
+                break
             else:
                 continue
-        for position in board:
-            if board[position] != "x" and board[position] != "o" and checkWinCondition(board) == False:
-                print("Tie!")
-            
+#I had to borrow this code from the help section: give credit where due!
+def tieCheck(board):
+    for position in range(9):
+            if board[position] != "x" and board[position] != "o":
+                return False
+    return True        
 
 def x(board):
     x = input("x's turn to choose a square (1-9):")
